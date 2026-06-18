@@ -1,0 +1,75 @@
+import { Types } from "mongoose";
+import { MenuRepository } from "../repositories/menu.repository";
+import { CreateMenuDto, MenuNode } from "../types/menu.type";
+
+export class MenuService {
+  constructor(private repository = new MenuRepository()) {}
+
+  async create(data: CreateMenuDto) {
+    const menuExists = await this.repository.findByName(data.name);
+
+    if (menuExists) {
+      throw new Error("Menu already exists");
+    }
+
+    if (data.relatedId) {
+      const parent = await this.repository.findById(data.relatedId);
+
+      if (!parent) {
+        throw new Error("Parent menu not found");
+      }
+    }
+
+    const menu = await this.repository.create(data.name, data.relatedId);
+
+    return {
+      id: menu._id,
+    };
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.deleteRecursively(id);
+  }
+
+  private async deleteRecursively(id: string): Promise<void> {
+    const children = await this.repository.findChildren(id);
+
+    for (const child of children) {
+      await this.deleteRecursively(child._id.toString());
+    }
+
+    await this.repository.deleteById(id);
+  }
+
+  async getMenuTree(): Promise<MenuNode[]> {
+    const menus = await this.repository.findAll();
+
+    const map = new Map<string, MenuNode>();
+
+    menus.forEach((menu) => {
+      map.set(menu._id.toString(), {
+        id: menu._id.toString(),
+        name: menu.name,
+        submenus: [],
+      });
+    });
+
+    const roots: MenuNode[] = [];
+
+    menus.forEach((menu) => {
+      const currentNode = map.get(menu._id.toString())!;
+
+      if (menu.parentId) {
+        const parentNode = map.get(
+          (menu.parentId as Types.ObjectId).toString(),
+        );
+
+        parentNode?.submenus.push(currentNode);
+      } else {
+        roots.push(currentNode);
+      }
+    });
+
+    return roots;
+  }
+}
