@@ -4,7 +4,7 @@ export class MenuRepository {
   async create(name: string, parentId?: string) {
     return MenuModel.create({
       name,
-      parentId: parentId || null,
+      relatedId: parentId || null,
     });
   }
 

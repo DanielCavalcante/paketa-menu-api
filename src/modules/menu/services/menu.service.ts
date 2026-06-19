@@ -1,11 +1,11 @@
 import { Types } from "mongoose";
 import { MenuRepository } from "../repositories/menu.repository";
-import { CreateMenuDto, MenuNode } from "../types/menu.type";
+import { CreateMenuDto, DetailMenuDto, MenuNode } from "../types/menu.type";
 
 export class MenuService {
   constructor(private repository = new MenuRepository()) {}
 
-  async create(data: CreateMenuDto) {
+  async create(data: CreateMenuDto): Promise<DetailMenuDto> {
     const menuExists = await this.repository.findByName(data.name);
 
     if (menuExists) {
@@ -23,7 +23,9 @@ export class MenuService {
     const menu = await this.repository.create(data.name, data.relatedId);
 
     return {
-      id: menu._id,
+      id: menu._id.toString(),
+      name: menu.name,
+      relatedId: menu.relatedId?.toString(),
     };
   }
 
@@ -59,9 +61,9 @@ export class MenuService {
     menus.forEach((menu) => {
       const currentNode = map.get(menu._id.toString())!;
 
-      if (menu.parentId) {
+      if (menu.relatedId) {
         const parentNode = map.get(
-          (menu.parentId as Types.ObjectId).toString(),
+          (menu.relatedId as Types.ObjectId).toString(),
         );
 
         parentNode?.submenus.push(currentNode);

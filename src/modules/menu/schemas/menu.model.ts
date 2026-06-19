@@ -5,20 +5,20 @@ const MenuSchema = new Schema(
     name: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
-    parentId: {
+    relatedId: {
       type: Schema.Types.ObjectId,
       ref: "Menu",
-      default: null
-    }
+      default: null,
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 MenuSchema.index({ name: 1 }, { unique: true });
-MenuSchema.index({ parentId: 1 });
+MenuSchema.index({ relatedId: 1 });
 
 export default model("Menu", MenuSchema);

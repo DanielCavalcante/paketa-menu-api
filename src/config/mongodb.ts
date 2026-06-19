@@ -1,14 +1,12 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { env } from "./env";
 
 let isConnected = false;
 
 export default async function connectMongo() {
   if (isConnected) return;
 
-  await mongoose.connect(process.env.MONGO_URI!);
+  await mongoose.connect(env.mongoUri!);
 
   isConnected = true;
   console.log("MongoDB connected");

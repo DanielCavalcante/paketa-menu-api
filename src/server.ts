@@ -1,7 +1,8 @@
 import app from "./app";
+import { env } from "./config/env";
 import connectMongo from "./config/mongodb";
 
-const PORT = 3000;
+const PORT = env.port;
 
 async function bootstrap() {
   await connectMongo();
