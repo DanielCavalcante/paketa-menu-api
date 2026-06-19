@@ -13,7 +13,11 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "build": "tsc"
+    "build": "tsc",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "setup": "npm install && docker compose up -d",
+    "start:local": "npm run docker:up && npm run dev"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
