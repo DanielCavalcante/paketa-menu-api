@@ -1,27 +1,27 @@
-import { MenuEntity } from "../entities/menu.entity";
-import { MenuModel } from "../models/menu.model";
+import { IMenuRepository } from "../interfaces/menu.interface";
+import { MenuDocument, MenuModel } from "../models/menu.model";
 
-export class MenuRepository {
-  async create(name: string, parentId?: string): Promise<MenuEntity> {
+export class MenuRepository implements IMenuRepository {
+  async create(name: string, parentId?: string): Promise<MenuDocument> {
     return MenuModel.create({
       name,
       relatedId: parentId || null,
     });
   }
 
-  async findById(id: string): Promise<MenuEntity | null> {
+  async findById(id: string): Promise<MenuDocument | null> {
     return MenuModel.findById(id);
   }
 
-  async findByName(name: string): Promise<MenuEntity | null> {
+  async findByName(name: string): Promise<MenuDocument | null> {
     return MenuModel.findOne({ name });
   }
 
-  async findAll(): Promise<MenuEntity[]> {
-    return MenuModel.find().lean().exec();
+  async findAll(): Promise<MenuDocument[]> {
+    return MenuModel.find().exec();
   }
 
-  async findChildren(parentId: string): Promise<MenuEntity[]> {
+  async findChildren(parentId: string): Promise<MenuDocument[]> {
     return MenuModel.find({ relatedId: parentId });
   }
 

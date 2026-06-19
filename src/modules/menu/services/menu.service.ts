@@ -1,14 +1,15 @@
-import { Types } from "mongoose";
 import { MenuRepository } from "../repositories/menu.repository";
 import { CreateMenuDto, DetailMenuDto, MenuNode } from "../types/menu.type";
 import { pino } from "pino";
 import { AppError } from "../shared/errors/app-error";
 import { buildMenuTree } from "../shared/utils/build-menu-tree";
+import { IMenuRepository } from "../interfaces/menu.interface";
 const logger = pino();
 
 export class MenuService {
-  constructor(private repository = new MenuRepository()) {}
-
+  constructor(
+    private readonly repository: IMenuRepository = new MenuRepository(),
+  ) {}
   async create(data: CreateMenuDto): Promise<DetailMenuDto> {
     const menuExists = await this.repository.findByName(data.name);
 
