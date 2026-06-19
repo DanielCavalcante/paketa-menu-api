@@ -38,6 +38,7 @@
     "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.5.0",
     "jest": "^30.4.2",
+    "mongodb-memory-server": "^11.2.0",
     "prettier": "^3.8.4",
     "serverless": "^4.38.0",
     "serverless-offline": "^14.7.3",
