@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+import { HydratedDocument, InferSchemaType, model, Schema } from "mongoose";
 
-const MenuSchema = new Schema(
+export const MenuSchema = new Schema(
   {
     name: {
       type: String,
@@ -18,7 +18,8 @@ const MenuSchema = new Schema(
   },
 );
 
-MenuSchema.index({ name: 1 }, { unique: true });
-MenuSchema.index({ relatedId: 1 });
+export type Menu = InferSchemaType<typeof MenuSchema>;
 
-export default model("Menu", MenuSchema);
+export type MenuDocument = HydratedDocument<Menu>;
+
+export const MenuModel = model<Menu>("Menu", MenuSchema);
