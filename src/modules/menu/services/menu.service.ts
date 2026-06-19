@@ -3,6 +3,7 @@ import { MenuRepository } from "../repositories/menu.repository";
 import { CreateMenuDto, DetailMenuDto, MenuNode } from "../types/menu.type";
 import { pino } from "pino";
 import { AppError } from "../shared/errors/app-error";
+import { buildMenuTree } from "../shared/utils/build-menu-tree";
 const logger = pino();
 
 export class MenuService {
@@ -51,34 +52,6 @@ export class MenuService {
 
   async getMenuTree(): Promise<MenuNode[]> {
     const menus = await this.repository.findAll();
-
-    const map = new Map<string, MenuNode>();
-
-    menus.forEach((menu) => {
-      map.set(menu._id.toString(), {
-        id: menu._id.toString(),
-        name: menu.name,
-        submenus: [],
-      });
-    });
-
-    const roots: MenuNode[] = [];
-
-    menus.forEach((menu) => {
-      const currentNode = map.get(menu._id.toString())!;
-
-      if (menu.relatedId) {
-        const parentNode = map.get(
-          (menu.relatedId as Types.ObjectId).toString(),
-        );
-
-        parentNode?.submenus.push(currentNode);
-      } else {
-        roots.push(currentNode);
-      }
-    });
-
-    logger.info("Retrieving menu tree");
-    return roots;
+    return buildMenuTree(menus);
   }
 }

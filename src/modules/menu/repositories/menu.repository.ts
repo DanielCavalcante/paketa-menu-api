@@ -1,5 +1,5 @@
 import { MenuEntity } from "../entities/menu.entity";
-import { MenuModel } from "../schemas/menu.model";
+import { MenuModel } from "../models/menu.model";
 
 export class MenuRepository {
   async create(name: string, parentId?: string): Promise<MenuEntity> {
