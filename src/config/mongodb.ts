@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { env } from "./env";
+import pino from "pino";
 
+const logger = pino();
 let isConnected = false;
 
 export default async function connectMongo() {
@@ -9,5 +11,5 @@ export default async function connectMongo() {
   await mongoose.connect(env.mongoUri!);
 
   isConnected = true;
-  console.log("MongoDB connected");
+  logger.info("MongoDB connected");
 }
