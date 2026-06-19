@@ -15,12 +15,7 @@ export function validate(schema: ZodType): RequestHandler {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        next(
-          new AppError(
-            error.issues.map((issue) => issue.message).join(", "),
-            400,
-          ),
-        );
+        next(new AppError("Validation failed", 400, error.issues));
 
         return;
       }
