@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { MenuRepository } from "../repositories/menu.repository";
 import { CreateMenuDto, DetailMenuDto, MenuNode } from "../types/menu.type";
 import { pino } from "pino";
+import { AppError } from "../shared/errors/app-error";
 const logger = pino();
 
 export class MenuService {
@@ -12,7 +13,7 @@ export class MenuService {
 
     if (menuExists) {
       logger.error(`Menu with name "${data.name}" already exists`);
-      throw new Error("Menu already exists");
+      throw new AppError("Menu already exists", 409);
     }
 
     if (data.relatedId) {
@@ -20,7 +21,7 @@ export class MenuService {
 
       if (!parent) {
         logger.error(`Parent menu with ID "${data.relatedId}" not found`);
-        throw new Error("Parent menu not found");
+        throw new AppError("Parent menu not found", 404);
       }
     }
 
