@@ -48,6 +48,12 @@ API:
 http://localhost:3000/api/v1/menus
 ```
 
+### Open API / Documentação
+
+```
+http://localhost:3000/api-docs
+```
+
 ### Testes
 
 ```bash
