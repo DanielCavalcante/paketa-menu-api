@@ -2,7 +2,7 @@
 
 ## Stack
 
-- Node 22
+- Node 24
 - Typescript
 - Express
 - MongoDB
