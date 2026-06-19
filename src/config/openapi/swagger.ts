@@ -21,7 +21,7 @@ registry.register("MenuResponse", menuResponseSchema);
 
 registry.registerPath({
   method: "post",
-  path: "/api/v1/menu",
+  path: "/api/v1/menus",
   tags: ["Menu"],
 
   request: {
@@ -53,7 +53,7 @@ registry.registerPath({
 
 registry.registerPath({
   method: "get",
-  path: "/api/v1/menu",
+  path: "/api/v1/menus",
   tags: ["Menu"],
 
   responses: {
@@ -65,7 +65,7 @@ registry.registerPath({
 
 registry.registerPath({
   method: "delete",
-  path: "/api/v1/menu/{id}",
+  path: "/api/v1/menus/{id}",
   tags: ["Menu"],
 
   request: {
